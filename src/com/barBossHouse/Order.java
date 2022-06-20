@@ -4,9 +4,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Order {
-    Dish[] dishes;
-    int amountOrderedDishes;
-    final int AMOUNT_OF_DISHES = 16;
+    private Dish[] dishes;
+    private int amountOrderedDishes;
+    private final int AMOUNT_OF_DISHES = 16;
+
+    public Dish[] getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(Dish[] dishes) {
+        this.dishes = dishes;
+    }
+
+    public int getAmountOrderedDishes() {
+        return amountOrderedDishes;
+    }
+
+    public void setAmountOrderedDishes(int amountOrderedDishes) {
+        this.amountOrderedDishes = amountOrderedDishes;
+    }
 
     //Конструктор не принимающий параметров, инициирующий массив из 16 элементов
     public Order() {
@@ -179,6 +195,7 @@ public class Order {
 
     // Метод возвращает массив блюд, отсротированный по убыванию цены
     public Dish[] sortDownCost() {
+        Dish[] dishes = arrayOfDish();
         boolean needIteration = true;
         while (needIteration) {
             needIteration = false;

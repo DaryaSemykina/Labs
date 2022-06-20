@@ -120,11 +120,13 @@ public class OrderManager {
     public int getNumOrderedDish(String dishName) {
         int numOrderedDish = 0;
         //int j =0;
-        for (int i = 0; i < orders.length; i++) {
-            if (orders[i] != null) {
-                for (int j = 0; j < orders[i].dishes.length; j++) {
-                    if (orders[i].dishes[j].getNameOfDish() == dishName) {
-                        numOrderedDish++;
+        if (dishName != null) {
+            for (int i = 0; i < orders.length; i++) {
+                if (orders[i] != null) {
+                    for (int j = 0; j < orders[i].getDishes().length; j++) {
+                        if (orders[i].getDishes()[j].getNameOfDish().equals(dishName)) {
+                            numOrderedDish++;
+                        }
                     }
                 }
             }
