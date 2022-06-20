@@ -1,9 +1,9 @@
-package com.cafe;
+package com.barBossHouse;
 
 public class Dish {
-    int costOfDish;
-    String nameOfDish;
-    String descriptionOfDish;
+     private int costOfDish;
+    private String nameOfDish;
+   private String descriptionOfDish;
     //Конструктор принимает два параметра – название и описание блюда
     public Dish(String nameOfDish, String descriptionOfDish) {
         this.nameOfDish = nameOfDish;
@@ -15,7 +15,6 @@ public class Dish {
         this.costOfDish = costOfDish;
         this.nameOfDish = nameOfDish;
         this.descriptionOfDish = descriptionOfDish;
-
     }
     //Метод возвращающает стоимость
     public int getCostOfDish() {
@@ -23,22 +22,35 @@ public class Dish {
     }
     //Метод устанавливает значение стоимости
     public void setCostOfDish(int costOfDish) {
+
         this.costOfDish = costOfDish;
     }
     //Метод возвращающает значение названия
     public String getNameOfDish() {
+
         return nameOfDish;
     }
     //Метод устанавливает значение названия
     public void setNameOfDish(String nameOfDish) {
+
         this.nameOfDish = nameOfDish;
     }
     //Метод возвращающает значение описания
     public String getDescriptionOfDish() {
+
         return descriptionOfDish;
     }
     //Метод устанавливает значение описания
     public void setDescriptionOfDish(String descriptionOfDish) {
         this.descriptionOfDish = descriptionOfDish;
+    }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "costOfDish=" + costOfDish +
+                ", nameOfDish='" + nameOfDish + '\'' +
+                ", descriptionOfDish='" + descriptionOfDish + '\'' +
+                '}';
     }
 }
