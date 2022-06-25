@@ -1,12 +1,31 @@
 package com.barBossHouse;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Order {
     private Dish[] dishes;
     private int amountOrderedDishes;
-    private final int AMOUNT_OF_DISHES = 16;
+    private static int AMOUNT_OF_DISHES = 16;
+
+
+    //Конструктор не принимающий параметров, инициирующий массив из 16 элементов??
+    public Order() {
+        this(new Dish[AMOUNT_OF_DISHES]);
+        // this.dishes = new Dish[AMOUNT_OF_DISHES];
+    }
+
+    //Конструктор принимает целое число–емкость массива, инициирующий массив указанным числом элементов
+    public Order(int amountDishes) {
+        this(new Dish[amountDishes]);
+        // this.dishes = new Dish[amountDishes];
+    }
+
+    // Конструктор принимает массив блюд.
+    public Order(Dish[] dishes) {
+        this.dishes = dishes;
+    }
 
     public Dish[] getDishes() {
         return dishes;
@@ -24,95 +43,58 @@ public class Order {
         this.amountOrderedDishes = amountOrderedDishes;
     }
 
-    //Конструктор не принимающий параметров, инициирующий массив из 16 элементов
-    public Order() {
-
-        this.dishes = new Dish[AMOUNT_OF_DISHES];
-    }
-
-    //Конструктор принимает целое число–емкость массива, инициирующий массив указанным числом элементов
-    public Order(int amountDishes) {
-
-        this.dishes = new Dish[amountDishes];
-    }
-
-    // Конструктор принимает массив блюд.
-    public Order(Dish[] dishes) {
-
-        this.dishes = dishes;
-    }
-
     //Метод добавляет блюдо в заказ
     public boolean addDish(Dish dish) {
-        boolean hasNull = false;
         int length = dishes.length;
         for (int i = 0; i < dishes.length; i++) {
             if (dishes[i] == null) {
                 dishes[i] = dish;
-                hasNull = true;
+                return true;
+            }
+        }
+        Dish[] dishes1 = new Dish[length * 2];
+        System.arraycopy(dishes, 0, dishes1, 0, length);
+        for (int i = 0; i < dishes1.length; i++) {
+            if (dishes1[i] == null) {
+                dishes1[i] = dish;
                 break;
             }
-        }
-        if (hasNull == false) {
-            Dish[] dishes1 = new Dish[length * 2];
-            for (int i = 0; i < dishes.length; i++) {
-                dishes1[i] = dishes[i];
-            }
-            for (int i = 0; i < dishes1.length; i++) {
-                if (dishes1[i] == null) {
-                    dishes1[i] = dish;
-                    hasNull = true;
-                    break;
-                }
-            }
-            dishes = dishes1;
-        }
-        return hasNull;
-    }
-
-    // Метод удаляющий блюдо из заказа по его названию
-    public boolean deleteOneDish(String nameO) {
-        boolean wasDelete = false;
-        for (int i = 0; i < dishes.length; i++) {
-            if (dishes[i].getNameOfDish().equals(nameO)) {
-                dishes[i] = null;
-                wasDelete = true;
-                break;
-            }
-        }
-        Dish[] dishes1 = new Dish[dishes.length];
-        int j = 0;
-        for (int i = 0; i < dishes.length; i++) {
-            if (dishes[i] == null)
-                continue;
-            dishes1[j] = dishes[i];
-            j++;
         }
         dishes = dishes1;
-        return wasDelete;
+        return true;
+    }
+// Метод удаляющий блюдо из заказа по его названию(общий)??
+
+    // Метод удаляющий блюдо из заказа по его названию
+    public boolean deleteOneDish(String name) {
+        for (int i = 0; i < dishes.length; i++) {
+            if (dishes[i] != null && dishes[i].getNameOfDish().equals(name)) {
+                dishes[i] = null;
+                return true;
+            }
+        }
+        return false;
     }
 
     //Метод удаляет все блюда с заданным именем
-    public int deleteDishes(String nameO) {
+//    public int deleteDishes(String name) {
+//        int numOfDelete = 0;
+//        for (int i = 0; i < dishes.length; i++) {
+//            if (dishes[i] != null) {
+//                if (dishes[i].getNameOfDish().equals(name)) {
+//                    dishes[i] = null;
+//                    numOfDelete++;
+//                }
+//            }
+//        }
+//        return numOfDelete;
+//    }
+    //Метод удаляет все блюда с заданным именем
+    public int deleteDishes(String name) {
         int numOfDelete = 0;
-        for (int i = 0; i < dishes.length; i++) {
-            if (dishes[i] != null) {
-                if (dishes[i].getNameOfDish() == nameO) {
-                    dishes[i] = null;
-                    numOfDelete++;
-                }
-            }
+        while (deleteOneDish(name)) {
+            numOfDelete++;
         }
-        Dish[] dishes1 = new Dish[dishes.length];
-        int j = 0;
-        for (int i = 0; i < dishes.length; i++) {
-            if (dishes[i] == null) {
-                continue;
-            }
-            dishes1[j] = dishes[i];
-            j++;
-        }
-        dishes = dishes1;
         return numOfDelete;
     }
 
@@ -128,18 +110,13 @@ public class Order {
 
     // Метод возвращающий массив блюд
     public Dish[] arrayOfDish() {
-        int amountOfDishes = 0;
-        for (int i = 0; i < dishes.length; i++) {
-            if (dishes[i] != null)
-                amountOfDishes++;
-        }
-        Dish[] dishes1 = new Dish[amountOfDishes];
+        Dish[] dishes1 = new Dish[generalAmountOfDishes()];
         int j = 0;
         for (int i = 0; i < dishes.length; i++) {
             if (dishes[i] == null)
                 continue;
-            dishes1[j] = dishes[i];
-            j++;
+            dishes1[j++] = dishes[i];
+
         }
         dishes = dishes1;
         return dishes;
@@ -150,16 +127,16 @@ public class Order {
         int sumOfCost = 0;
         for (int i = 0; i < dishes.length; i++) {
             if (dishes[i] != null)
-                sumOfCost = sumOfCost + dishes[i].getCostOfDish();
+                sumOfCost += dishes[i].getCostOfDish();
         }
         return sumOfCost;
     }
 
     //Метод возвращающий число заказанных блюд
-    public int numOfOrderedDishes(String nameO) {
+    public int numOfOrderedDishes(String name) {
         int amountOfDishes = 0;
         for (int i = 0; i < dishes.length; i++) {
-            if (dishes[i].getNameOfDish().equals(nameO))
+            if (dishes[i] != null && dishes[i].getNameOfDish().equals(name))
                 amountOfDishes++;
         }
         return amountOfDishes;
@@ -167,31 +144,27 @@ public class Order {
 
     // Метод возвращающий массив названий заказанных блюд??
     public String[] arrayNameOfDish() {
-        int arrLength = 0;
-        for (int i = 0; i < dishes.length; i++) {
-            String name = dishes[i].getNameOfDish();
-            arrLength++;
-            for (int j = i + 1; j < dishes.length; j++) {
-                if (name.equals(dishes[j].getNameOfDish())) {
-                    arrLength--;
+        String[] names = new String[dishes.length]; // создаем пустой массив с длиной массива дишес
+        int count=0;                       // создаем счетчик элементов для массива нэймс
+        for (Dish dish : dishes) {    //перебирвем массив дищес
+            if (dish == null) continue;
+            boolean isContains = false;
+            for (String name : names) {   //перебираем массив имена
+                if (name == null) continue; // если именя итое равно нул, то дольше и по идее этот цикло фор просто проходит и изсонтант должа остать фолс
+                if (dish.getNameOfDish().equals(name)) {
+                    isContains = true;
                     break;
                 }
             }
-        }
-        String[] arrayNames = new String[arrLength];
-        int num = 0;
-        for (int i = 0; i < dishes.length; i++) {
-            arrayNames[num] = dishes[i].getNameOfDish();
-            for (int j = i + 1; j < dishes.length; j++) {
-                if (arrayNames[num].equals(dishes[j].getNameOfDish())) {
-                    num--;
-                    break;
-                }
+            if (!isContains) {
+                names[count++] = dish.getNameOfDish();
             }
-            num++;
         }
-        return arrayNames;
+        String[] namesWithoutNull = new String[count];
+        System.arraycopy(names,0,namesWithoutNull,0,count);
+        return namesWithoutNull;
     }
+//
 
     // Метод возвращает массив блюд, отсротированный по убыванию цены
     public Dish[] sortDownCost() {

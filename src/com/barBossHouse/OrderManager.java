@@ -1,18 +1,26 @@
 package com.barBossHouse;
 
 public class OrderManager {
-    Order[] orders;
+    private Order[] orders;
 
     // Конструктор принимает число столиков, инициализирует массив элементов
     public OrderManager(int numOfTables) {
         this.orders = new Order[numOfTables];
     }
 
+    public Order[] getOrders() {
+        return orders;
+    }
+
     // Метод добавляет заказ столику, принимая номер стола и ссылку на заказ
     public void setOrder(int numOfTable, Order order) {
-        if (numOfTable >= 0 && numOfTable < orders.length)
+        if (numOfTable >= 0 && numOfTable < orders.length) {
             orders[numOfTable] = order;
+        } else {
+            System.out.println("Ошибка: нет такого номера столика");
+        }
     }
+
 
     //  Метод получает заказ столика по его номеру
     public Order getOrder(int numOfTable) {
@@ -27,6 +35,9 @@ public class OrderManager {
     public void setTableFree(int numOfTable) {
         if (numOfTable >= 0 && numOfTable < orders.length)
             orders[numOfTable] = null;
+        else {
+            System.out.println("Ошибка: нет такого номера столика");
+        }
     }
 
     // Метод возвращает номер первого свободного стола
@@ -40,50 +51,51 @@ public class OrderManager {
         return -1;
     }
 
-    //Метод возвращает массив номеров свободных столиков
-    public int[] numbersOfFreeTables() {
-        int lengthNewArray = 0;
+    public int[] numberTables(boolean isFree) {
+        int freeOrderCount = 0;
         for (int i = 0; i < orders.length; i++) {
             if (orders[i] == null)
-                lengthNewArray++;
+                freeOrderCount++;
         }
-        if (lengthNewArray == 0) {
-            System.out.println("Ошибка:нет свободных столиков");
-            return null;
+        if (isFree) {
+            if (freeOrderCount == 0) {
+                System.out.println("Ошибка:нет свободных столиков");
+                return null;
+            }
+        } else {
+            if (freeOrderCount == orders.length) {
+                System.out.println("Ошибка:нет занятых столиков");
+                return null;
+            }
         }
-        int[] FreeNumOfTables = new int[lengthNewArray];
+        int[] numbOfTables;
+        if (isFree) {
+            numbOfTables = new int[freeOrderCount];
+        } else {
+            numbOfTables = new int[orders.length - freeOrderCount];
+        }
         int j = 0;
         for (int i = 0; i < orders.length; i++) {
-            if (orders[i] == null) {
-                FreeNumOfTables[j] = i;
+            if (isFree) {
+                if (orders[i] == null)
+                    numbOfTables[j++] = i;
+            } else {
+                if (orders[i] != null)
+                    numbOfTables[j++] = i;
             }
-            j++;
-
         }
-        return FreeNumOfTables;
+        return numbOfTables;
+    }
+
+
+    //Метод возвращает массив номеров свободных столиков
+    public int[] numbersOfFreeTables() {
+        return numberTables(true);
     }
 
     // Метод возвращает массив номеров занятых столов
     public int[] numbersOfOccupiedTables() {
-        int lengthNewArr = 0;
-        for (int i = 0; i < orders.length; i++) {
-            if (orders[i] != null)
-                lengthNewArr++;
-        }
-        if (lengthNewArr == 0) {
-            System.out.println("Ошибка:нет занятых столиков");
-            return null;
-        }
-        int[] OccupiedNumOfTables = new int[lengthNewArr];
-        int j = 0;
-        for (int i = 0; i < orders.length; i++) {
-            if (orders[i] != null) {
-                OccupiedNumOfTables[j] = i;
-            }
-            j++;
-
-        }
-        return OccupiedNumOfTables;
+        return numberTables(false);
     }
 
     // Метод возвращает массив имеющихся на данный момент заказов
@@ -110,7 +122,7 @@ public class OrderManager {
         int costAllOrders = 0;
         for (int i = 0; i < orders.length; i++) {
             if (orders[i] != null) {
-                costAllOrders = costAllOrders + orders[i].generalCostOfOrder();
+                costAllOrders += orders[i].generalCostOfOrder();
             }
         }
         return costAllOrders;
@@ -119,17 +131,14 @@ public class OrderManager {
     // Метод возвращает количество порций определенного блюда
     public int getNumOrderedDish(String dishName) {
         int numOrderedDish = 0;
-        //int j =0;
-        if (dishName != null) {
-            for (int i = 0; i < orders.length; i++) {
-                if (orders[i] != null) {
-                    for (int j = 0; j < orders[i].getDishes().length; j++) {
-                        if (orders[i].getDishes()[j].getNameOfDish().equals(dishName)) {
-                            numOrderedDish++;
-                        }
-                    }
-                }
-            }
+
+        if (dishName == null)
+            return 0;
+        for (int i = 0; i < orders.length; i++) {
+            if (orders[i] == null)
+                continue;
+            numOrderedDish += orders[i].numOfOrderedDishes(dishName);
+
         }
         return numOrderedDish;
     }

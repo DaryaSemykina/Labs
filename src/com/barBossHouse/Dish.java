@@ -7,10 +7,9 @@ public class Dish {
 
     //Конструктор принимает два параметра – название и описание блюда
     public Dish(String nameOfDish, String descriptionOfDish) {
-        this.nameOfDish = nameOfDish;
-        this.descriptionOfDish = descriptionOfDish;
-        this.costOfDish = 0;
+        this(0, nameOfDish, descriptionOfDish);
     }
+
 
     //Конструктор принимает три параметра – стоимость, название и описание блюда
     public Dish(int costOfDish, String nameOfDish, String descriptionOfDish) {
