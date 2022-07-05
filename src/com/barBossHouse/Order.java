@@ -63,39 +63,29 @@ public class Order {
         dishes = dishes1;
         return true;
     }
-// Метод удаляющий блюдо из заказа по его названию(общий)??
 
-    // Метод удаляющий блюдо из заказа по его названию
-    public boolean deleteOneDish(String name) {
+    // Метод удаляющий блюдо из заказа по его названию(общий)
+    public int deleteDish(boolean isFree, String name) {
+        int numOfDelete = 0;
         for (int i = 0; i < dishes.length; i++) {
             if (dishes[i] != null && dishes[i].getNameOfDish().equals(name)) {
                 dishes[i] = null;
-                return true;
+                numOfDelete++;
+                if (isFree) return numOfDelete;
             }
         }
+        return numOfDelete;
+    }
+
+    // Метод удаляющий блюдо из заказа по его названию
+    public boolean deleteOneDish(String name) {
+        if (deleteDish(true, name) == 1) return true;
         return false;
     }
 
     //Метод удаляет все блюда с заданным именем
-//    public int deleteDishes(String name) {
-//        int numOfDelete = 0;
-//        for (int i = 0; i < dishes.length; i++) {
-//            if (dishes[i] != null) {
-//                if (dishes[i].getNameOfDish().equals(name)) {
-//                    dishes[i] = null;
-//                    numOfDelete++;
-//                }
-//            }
-//        }
-//        return numOfDelete;
-//    }
-    //Метод удаляет все блюда с заданным именем
     public int deleteDishes(String name) {
-        int numOfDelete = 0;
-        while (deleteOneDish(name)) {
-            numOfDelete++;
-        }
-        return numOfDelete;
+        return deleteDish(false, name);
     }
 
     // Метод возвращающий общее число блюд
@@ -145,12 +135,13 @@ public class Order {
     // Метод возвращающий массив названий заказанных блюд??
     public String[] arrayNameOfDish() {
         String[] names = new String[dishes.length]; // создаем пустой массив с длиной массива дишес
-        int count=0;                       // создаем счетчик элементов для массива нэймс
+        int count = 0;                       // создаем счетчик элементов для массива нэймс
         for (Dish dish : dishes) {    //перебирвем массив дищес
             if (dish == null) continue;
             boolean isContains = false;
             for (String name : names) {   //перебираем массив имена
-                if (name == null) continue; // если именя итое равно нул, то дольше и по идее этот цикло фор просто проходит и изсонтант должа остать фолс
+                if (name == null)
+                    continue; // если именя итое равно нул, то дольше и по идее этот цикло фор просто проходит и изсонтант должа остать фолс
                 if (dish.getNameOfDish().equals(name)) {
                     isContains = true;
                     break;
@@ -161,7 +152,7 @@ public class Order {
             }
         }
         String[] namesWithoutNull = new String[count];
-        System.arraycopy(names,0,namesWithoutNull,0,count);
+        System.arraycopy(names, 0, namesWithoutNull, 0, count);
         return namesWithoutNull;
     }
 //

@@ -20,8 +20,8 @@ public class Main {
         System.out.println(order.getDishes().length);
         order.showAllDishes();
         System.out.println();
-       // System.out.println(order.deleteDishes("мимоза"));
-       // order.showAllDishes();
+       System.out.println(order.deleteOneDish("мимоза"));
+        order.showAllDishes();
 //        System.out.println();
 //         //order.deleteDishes("Борщ");
 //        order.showAllDishes();
@@ -55,8 +55,13 @@ public class Main {
 //        System.out.println(Arrays.toString(order.sortDownCost()));
 //        System.out.println(order.generalCostOfOrder());
 //        System.out.println(Arrays.toString(order.arrayNameOfDish()));
-
-
-
+Address address = new Address("Samara","Pobeda",444555,69,"A",125);
+        System.out.println(address);
+        Address address1 = new Address("Samara","Pobeda",444555,125,"A",69);
+        System.out.println(address.hashCode());
+        System.out.println(address1.hashCode());
+        System.out.println(address.equals(address1));
+Customer customer = new Customer("Vova","Ivanov",34,address);
+        System.out.println(customer);
     }
 }
