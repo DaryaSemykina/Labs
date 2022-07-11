@@ -5,15 +5,20 @@ public final class Customer {
     final private String surname;
     final private int age;
     final private Address address;
-
+    final static private String NAME_CUSTOMER ="";
+    final static private String SURNAME_CUSTOMER ="";
+    final static private int AGE_DEFAULT =-1;
+    // Экземпляр класса Customer, инициализированный с помощью конструктора принимающего один параметр – возраст со значением 21 и еще один экземпляр с возрастом 14 лет
+    public final static Customer customerDefault = new Customer(21);
+    public final static Customer customerDefaultSecond = new Customer(14);
     //Конструктор Без параметров
     public Customer() {
-        this("", "", -1, new Address());
+        this(NAME_CUSTOMER, SURNAME_CUSTOMER, AGE_DEFAULT, new Address());
     }
 
     //Конструктор, принимающий один параметр – возраст
     public Customer(int age) {
-        this("", "", age, new Address());
+        this(NAME_CUSTOMER, SURNAME_CUSTOMER, age, new Address());
     }
 
     //Конструктор, принимающий все 4 параметра
@@ -23,9 +28,6 @@ public final class Customer {
         this.age = age;
         this.address = address;
     }
-    // Экземпляр класса Customer, инициализированный с помощью конструктора принимающего один параметр – возраст со значением 21 и еще один экземпляр с возрастом 14 лет
-    //Customer customerDefault = new Customer(21);
-    //Customer customerDefaultSecond = new Customer(14);
 
     //Метод,возвращающий возраст.
     public int getAge() {
@@ -50,13 +52,14 @@ public final class Customer {
     //Переопрделенный метод toString()
     @Override
     public String toString() {
-        String str = "Customer:";
+        String str = '\"'+"Customer: ";
         if (!surname.equals("")) str += "<" + surname + "> ";
-        if (!nameCustomer.equals("")) str += "<" + nameCustomer + "> ";
-        str += ",";
-        if (age != -1) str += "<" + age + "> ";
-        str += ",";
-        if (!address.toString().equals("Address:")) str += "<" + address.toString() + "> ";
+        if (!nameCustomer.equals("")) str += "<" + nameCustomer + ">";
+        str += ", ";
+        if (age != -1) str += "<" + age + ">";
+        str += ", ";
+        if (!address.toString().equals("Address:")) str += "<" + address + ">";
+        str += '\"';
         return str;
     }
 
@@ -69,8 +72,7 @@ public final class Customer {
         if (!this.getNameCustomer().equals(customer.getNameCustomer())) return false;
         if (!this.getSurname().equals(customer.getSurname())) return false;
         if (this.getAge() != customer.getAge()) return false;
-        if (!this.getAddress().equals(customer.getAddress())) return false;
-        return true;
+        return this.getAddress().equals(customer.getAddress());
     }
 
     //Переопрделенный метод hashCode

@@ -1,80 +1,87 @@
 package com.barBossHouse;
 
 public final class Address {
-    final private String CITY;
-    final private String STREET;
-    final private int POSTAL_CODE;
-    final private int BUILD_NUM;
-    final private String BUILD_LETTER;
-    final private int BUILD_OFFICE;
-
-    // final private String CITY_DEFAULT = "Самара";?
+     private final String city;
+    final private String street;
+    final private int postalCode;
+    final private int buildNum;
+    final private String buildLetter;
+    final private int apartmentNumber;
+    //Экземпляр класса Address, инициализированный с помощью конструктора поумолчанию
+     public  final static Address addressDefault = new Address();
+     final  static  private String CITY_DEFAULT = "Самара";
+    final  static  private String CITY_DEFAULT_1 = "Самара";
+    final  static  private String STREET_DEFAULT = "";
+    final  static  private int POSTAL_CODE = -1;
+    final  static  private int BUILD_NUM = -1;
+    final  static  private String BUILD_LETTER = "";
+    final  static  private int APARTMENT_NUMBER = -1;
 //Конструктор Без параметров. В этом случае все строковые поля инициализируются пустыми строками, а числовые – значением -1.
     public Address() {
-        this("", "", -1, -1, "", -1);
+        this(CITY_DEFAULT_1, STREET_DEFAULT, POSTAL_CODE, BUILD_NUM, BUILD_LETTER, APARTMENT_NUMBER);
     }
 
     //Конструктор,Принимающий название улицы, номер здания, литера здания, номер помещения.Название страны принимается равным “Самара”, почтовый индекс – -1.
-    public Address(String STREET, int BUILD_NUM, String BUILD_LETTER, int BUILD_OFFICE) {
-        this("Самара", STREET, -1, BUILD_NUM, BUILD_LETTER, BUILD_OFFICE);
+    public Address(String street, int buildNum, String buildLetter, int apartmentNumber) {
+        this(CITY_DEFAULT, street, POSTAL_CODE, buildNum, buildLetter, apartmentNumber);
     }
 
     //Конструктор,Принимающий все параметры
-    public Address(String CITY, String STREET, int POSTAL_CODE, int BUILD_NUM, String BUILD_LETTER, int BUILD_OFFICE) {
-        this.CITY = CITY;
-        this.STREET = STREET;
-        this.POSTAL_CODE = POSTAL_CODE;
-        this.BUILD_NUM = BUILD_NUM;
-        this.BUILD_LETTER = BUILD_LETTER;
-        this.BUILD_OFFICE = BUILD_OFFICE;
+    public Address(String city, String street, int postalCode, int buildNum, String buildLetter, int apartmentNumber) {
+        this.city = city;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.buildNum = buildNum;
+        this.buildLetter = buildLetter;
+        this.apartmentNumber = apartmentNumber;
 
     }
-    //Экземпляр класса Address, инициализированный с помощью конструктора поумолчанию.StackOverflowError????!!!!
-    // Address addressDefault = new Address();
+
+
 
     //Метод, возвращающий название улицы.
-    public String getSTREET() {
-        return STREET;
+    public String getStreet() {
+        return street;
     }
 
     //Метод, возвращающий название города
-    public String getCITY() {
-        return CITY;
+    public String getCity() {
+        return city;
     }
 
     //Метод, возвращающий почтовый индекс
-    public int getPOSTAL_CODE() {
-        return POSTAL_CODE;
+    public int getPostalCode() {
+        return postalCode;
     }
 
     //Метод, возвращающий номер здания.
-    public int getBUILD_NUM() {
-        return BUILD_NUM;
+    public int getBuildNum() {
+        return buildNum;
     }
 
     //Метод, возвращающий номер помещения
-    public int getBUILD_OFFICE() {
-        return BUILD_OFFICE;
+    public int getApartmentNumber() {
+        return apartmentNumber;
     }
 
     //Метод, возвращающий литеру здания.
-    public String getBUILD_LETTER() {
-        return BUILD_LETTER;
+    public String getBuildLetter() {
+        return buildLetter;
     }
 
     //Переопрделенный метод toString()
     @Override
     public String toString() {
-        String str = "Address:";
-        if (!CITY.equals("")) str += "<" + CITY + "> ";
-        if (POSTAL_CODE != -1) str += "<" + POSTAL_CODE + "> ";
+        String str = '\"'+"Address: ";
+        if (!city.equals("")) str += "<" + city + "> ";
+        if (postalCode != -1) str += "<" + postalCode + ">";
         str += ",";
-        if (!STREET.equals("")) str += "<" + STREET + "> ";
-        if (BUILD_NUM != -1) str += "<" + BUILD_NUM + "> ";
-        if (!BUILD_LETTER.equals("")) str += "<" + BUILD_LETTER + "> ";
+        if (!street.equals("")) str += "<" + street + "> ";
+        if (buildNum != -1) str += "<" + buildNum + ">";
+        if (!buildLetter.equals("")) str += "<" + buildLetter + ">";
         str += "-";
-        if (BUILD_OFFICE != -1) str += "<" + BUILD_OFFICE + "> ";
-
+        if (apartmentNumber != -1) str += "<" + apartmentNumber + ">";
+        str += '\"';
         return str;
     }
 
@@ -84,18 +91,17 @@ public final class Address {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Address address = (Address) obj;
-        if (!this.getCITY().equals(address.getCITY())) return false;
-        if (!this.getSTREET().equals(address.getSTREET())) return false;
-        if (this.getPOSTAL_CODE() != address.getPOSTAL_CODE()) return false;
-        if (this.getBUILD_NUM() != address.getBUILD_NUM()) return false;
-        if (!this.getBUILD_LETTER().equals(address.getBUILD_LETTER())) return false;
-        if (this.getBUILD_OFFICE() != address.getBUILD_OFFICE()) return false;
-        return true;
+        if (!this.getCity().equals(address.getCity())) return false;
+        if (!this.getStreet().equals(address.getStreet())) return false;
+        if (this.getPostalCode() != address.getPostalCode()) return false;
+        if (this.getBuildNum() != address.getBuildNum()) return false;
+        if (!this.getBuildLetter().equals(address.getBuildLetter())) return false;
+        return this.getApartmentNumber() == address.getApartmentNumber();
     }
 
     //Переопрделенный метод hashCode
     @Override
     public int hashCode() {
-               return getCITY().hashCode()^getSTREET().hashCode()^getPOSTAL_CODE()^getBUILD_NUM()^getBUILD_LETTER().hashCode()^getBUILD_OFFICE();
+               return getCity().hashCode()^getStreet().hashCode()^getPostalCode()^getBuildNum()^getBuildLetter().hashCode()^getApartmentNumber();
     }
 }
