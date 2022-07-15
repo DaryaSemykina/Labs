@@ -58,7 +58,7 @@ public final class Customer {
         str += ", ";
         if (age != -1) str += "<" + age + ">";
         str += ", ";
-        if (!address.toString().equals("Address:")) str += "<" + address + ">";
+        if (!address.toString().equals('\"'+"Address: ")) str += "<" + address + ">";
         str += '\"';
         return str;
     }

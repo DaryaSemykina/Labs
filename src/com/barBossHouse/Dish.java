@@ -1,63 +1,45 @@
 package com.barBossHouse;
 
-public class Dish {
-    private int costOfDish;
-    private String nameOfDish;
-    private String descriptionOfDish;
-
-    //Конструктор принимает два параметра – название и описание блюда
+public class Dish extends MenuItem {
+    //Конструкцтор, принимающий два параметра – название и описание. Стоимость при этом 
+    //инициализируется значением 0                                                      
     public Dish(String nameOfDish, String descriptionOfDish) {
-        this(0, nameOfDish, descriptionOfDish);
+        super(nameOfDish, descriptionOfDish);
+
     }
 
-
-    //Конструктор принимает три параметра – стоимость, название и описание блюда
+    //Конструкцтор,  принимающий три параметра – стоимость, название и описание.
     public Dish(int costOfDish, String nameOfDish, String descriptionOfDish) {
-        this.costOfDish = costOfDish;
-        this.nameOfDish = nameOfDish;
-        this.descriptionOfDish = descriptionOfDish;
+        super(costOfDish, nameOfDish, descriptionOfDish);
     }
 
-    //Метод возвращающает стоимость
-    public int getCostOfDish() {
-        return costOfDish;
-    }
-
-    //Метод устанавливает значение стоимости
-    public void setCostOfDish(int costOfDish) {
-
-        this.costOfDish = costOfDish;
-    }
-
-    //Метод возвращающает значение названия
-    public String getNameOfDish() {
-
-        return nameOfDish;
-    }
-
-    //Метод устанавливает значение названия
-    public void setNameOfDish(String nameOfDish) {
-
-        this.nameOfDish = nameOfDish;
-    }
-
-    //Метод возвращающает значение описания
-    public String getDescriptionOfDish() {
-
-        return descriptionOfDish;
-    }
-
-    //Метод устанавливает значение описания
-    public void setDescriptionOfDish(String descriptionOfDish) {
-        this.descriptionOfDish = descriptionOfDish;
-    }
-
+    //Переопрделенный метод toString()
     @Override
     public String toString() {
-        return "Dish{" +
-                "costOfDish=" + costOfDish +
-                ", nameOfDish='" + nameOfDish + '\'' +
-                ", descriptionOfDish='" + descriptionOfDish + '\'' +
-                '}';
+        String str = "\"Dish: ";
+        if (getNameOfDish() != null) str += "<" + getNameOfDish() + ">, ";
+        str += "<" + getCostOfDish() + ">p. ";
+        if (getDescriptionOfDish() != null) str += "<" + getDescriptionOfDish() + ">";
+        str += "\"";
+        return str;
     }
+
+    //Переопрделенный метод equals
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Dish dish = (Dish) obj;
+        if (this.getCostOfDish() != dish.getCostOfDish()) return false;
+        return this.getNameOfDish().equals(dish.getNameOfDish());
+    }
+
+    //Переопрделенный метод hashCode
+        @Override
+        public int hashCode() {
+            return getNameOfDish().hashCode()^getDescriptionOfDish().hashCode()^getCostOfDish();
+        }
 }
+
+
+
